@@ -1,0 +1,4 @@
+*terraform.tfstate*
+/.terraform
+aks.tfvars
+**/basic.yaml
