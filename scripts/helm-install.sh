@@ -16,9 +16,9 @@ helm repo update
 #azure file storage
 kubectl create clusterrole system:azure-cloud-provider --verb=get,create --resource=secrets
 kubectl create clusterrolebinding system:azure-cloud-provider --clusterrole=system:azure-cloud-provider --serviceaccount=kube-system:persistent-volume-binder
-kubectl apply -f azure-sc.yaml
+kubectl apply -f ./scripts/azure-sc.yaml
 
 helm upgrade --install qseonk8s-init edge/qliksense-init 
-helm upgrade --install qseonk8s edge/qliksense -f ./basic.yaml
+helm upgrade --install qseonk8s edge/qliksense -f ./scripts/basic.yaml
 sleep 60
 kubectl get service -l app=nginx-ingress --namespace default
