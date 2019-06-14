@@ -9,7 +9,6 @@ mv linux-amd64/* ./bin/
 rmdir linux-amd64
 rm helm-v2.14.1-linux-amd64.tar.gz
 export PATH="./bin:"$PATH
-echo $PATH
 
 echo "Getting AKS credentials..."
 #AKS_NAME="qse4qmi"; AKS_RG="Pre-Sales-aor";AKS_SUBSCRIPTION="e2f7b1c0-b282-4d73-b95f-8ebc778040b8";
@@ -38,7 +37,7 @@ kubectl apply -f ./scripts/azure-sc.yaml
 echo "Deploying Qlik Sense Enterprise on Kubernetes."
 helm upgrade --install qseonk8s-init qlik-stable/qliksense-init 
 helm upgrade --install qseonk8s qlik-stable/qliksense -f ./scripts/basic-sample.yaml
-#sleep 60
+sleep 20
 #kubectl get service -l app=nginx-ingress --namespace default
 
 kubectl get pod -o wide

@@ -30,7 +30,7 @@ presales_subnet_id="/subscriptions/<presales_subscription_id>/resourceGroups/IT-
 client_type="linux"
 cluster_name = "xxxxxx"
 location="East US"
-agent_count=2
+agent_count=1
 ```
 
 ssh keys set up.  It is expecting to find *~/.ssh/id_rsa.pub* & *~/.ssh/id_rsa*
