@@ -1,7 +1,7 @@
-resource "azurerm_resource_group" "aks" {
-  name     = "${var.resource_group_name}"
-  location = "${var.location}"
-}
+#resource "azurerm_resource_group" "aks" {
+#  name     = "${var.resource_group_name}"
+#  location = "${var.location}"
+#}
 
 # resource "azurerm_virtual_network" "vnet" {
 #   name                = "aks-vnet"
@@ -19,9 +19,9 @@ resource "azurerm_resource_group" "aks" {
 
 resource "azurerm_kubernetes_cluster" "akslkn" {
   name                = "${var.cluster_name}"
-  location            = "${azurerm_resource_group.aks.location}"
-  resource_group_name = "${azurerm_resource_group.aks.name}"
-  dns_prefix          = "${var.dns_prefix}"
+  location            = "${var.location}"
+  resource_group_name = "${var.resource_group_name}"
+  dns_prefix          = "${var.cluster_name}-${var.resource_group_name}"
   #kubernetes_version  = "${var.kubernetes_version}"
 
   linux_profile {
@@ -39,7 +39,8 @@ resource "azurerm_kubernetes_cluster" "akslkn" {
     os_type         = "Linux"
     os_disk_size_gb = 30
 
-    #vnet_subnet_id = "${azurerm_subnet.subnet.id}"
+    # Using Presales subnet
+    vnet_subnet_id = "${var.presales_subnet_id}"
   }
 
   service_principal {
@@ -60,10 +61,11 @@ resource "azurerm_kubernetes_cluster" "akslkn" {
   }
 
   provisioner "local-exec" {
-    command =  "${var.client_type == "linux" ? var.linux_script : var.windows_script}"
+    command =  "${var.client_type == "linux"? var.linux_script : var.client_type == "mac"? var.mac_script : var.windows_script}"
     environment = {
       AKS_NAME = "${var.cluster_name}"
       AKS_RG   = "${var.resource_group_name}"
+      AKS_SUBSCRIPTION   = "${var.subscription_id}"
     }
   }
 }

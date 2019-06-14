@@ -1,6 +1,6 @@
 *terraform.tfstate*
 /.terraform
-aks.tfvars
+*.tfvars
 **/basic.yaml
 /bin
 scripts/helm-install.ps1

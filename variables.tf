@@ -1,3 +1,6 @@
+variable "subscription_id" {
+}
+
 variable "client_id" {
 }
 
@@ -12,10 +15,6 @@ variable "ssh_public_key" {
   default = "~/.ssh/id_rsa.pub"
 }
 
-variable "dns_prefix" {
-  default = "tf-aksxyz"
-}
-
 variable "cluster_name" {
   default = "tf-aksxyz"
 }
@@ -24,8 +23,12 @@ variable "resource_group_name" {
   default = "tf-aksxyz-rg"
 }
 
+variable "presales_subnet_id" {
+    default = "/subscriptions/e2f7b1c0-b282-4d73-b95f-8ebc778040b8/resourceGroups/IT-Infra-Mgmt/providers/Microsoft.Network/virtualNetworks/IT-Infra-Mgmt-VNet/subnets/Pre-Sales-Subnet"
+}
+
 variable "location" {
-  default = "westeurope"
+  default = "eastus"
 }
 
 variable "network_plugin" {
@@ -38,6 +41,9 @@ variable "kubernetes_version" {
 
 variable "linux_script" {
   default = "./scripts/helm-install.sh"
+}
+variable "mac_script" {
+  default = "./scripts/helm-install-mac.sh"
 }
 variable "windows_script" {
   default = ".\\scripts\\helm_install.cmd"
