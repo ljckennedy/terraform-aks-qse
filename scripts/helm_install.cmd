@@ -20,10 +20,11 @@ IF "%AKS_NAME%"=="" (
     ECHO Variable is NOT defined
     SET AKS_NAME=akslkn
     SET  AKS_RG=akslknrg
+    SET  AKS_SUBSCRIPTION="e2f7b1c0-b282-4d73-b95f-8ebc778040b8"
 )
 
-echo Cluster details: { NAME: %AKS_NAME%  RG:  %AKS_RG% }
-cmd /c az aks get-credentials -n %AKS_NAME%  -g %AKS_RG% --overwrite-existing
+echo Cluster details: { NAME: %AKS_NAME%  RG:  %AKS_RG%  SUBSCRIPTION: %AKS_SUBSCRIPTION%}
+cmd /c az aks get-credentials -n %AKS_NAME%  -g %AKS_RG% --subscription %AKS_SUBSCRIPTION% --overwrite-existing
 
 echo "######################"
 echo "Creating service account and cluster role binding for Tiller..."
@@ -44,7 +45,7 @@ kubectl create clusterrolebinding system:azure-cloud-provider --clusterrole=syst
 kubectl apply -f ./scripts/azure-sc.yaml
 
 helm upgrade --install qseonk8s-init qlik-edge/qliksense-init 
-helm upgrade --install qseonk8s qlik-edge/qliksense -f ./scripts/basic.yaml
+helm upgrade --install qseonk8s qlik-edge/qliksense -f ./scripts/basic-sample.yaml
 timeout /t 60 /nobreak > NUL
 kubectl get service -l app=nginx-ingress --namespace default
  

@@ -1,15 +1,15 @@
 #!/bin/bash
 echo "installing helm & kubectl"
 mkdir ./bin
-curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
 mv kubectl ./bin/
-chmod +x ./bin/kubectl
-curl -LO  https://get.helm.sh/helm-v2.14.1-linux-amd64.tar.gz
-tar xvfz helm-v2.14.1-linux-amd64.tar.gz
-mv linux-amd64/* ./bin/
-rmdir linux-amd64
-rm helm-v2.14.1-linux-amd64.tar.gz
-export PATH="./bin:"$PATH
+chmod +x ./bin/kubectl 
+curl -LO  https://get.helm.sh/helm-v2.14.1-darwin-amd64.tar.gz
+tar xvfz helm-v2.14.1-darwin-amd64.tar.gz
+mv darwin-amd64/* ./bin/
+rmdir -fr darwin-amd64
+rm helm-v2.14.1-darwin-amd64.tar.gz
+export PATH="./bin:"
 
 echo "Getting AKS credentials..."
 #AKS_NAME="qse4qmi"; AKS_RG="Pre-Sales-aor";AKS_SUBSCRIPTION="e2f7b1c0-b282-4d73-b95f-8ebc778040b8";

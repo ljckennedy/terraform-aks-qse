@@ -27,7 +27,7 @@ resource_group_name="Pre-Sales-<trigram>" #Predefined RG in Qlik Presales Azure 
 presales_subnet_id="/subscriptions/<presales_subscription_id>/resourceGroups/IT-Infra-Mgmt/providers/Microsoft.Network/virtualNetworks/IT-Infra-Mgmt-VNet/subnets/Pre-Sales-Subnet"
 
 #these are up to you.
-client_type="linux"
+client_type="mac" # linux or windows
 cluster_name = "xxxxxx"
 location="East US"
 agent_count=1

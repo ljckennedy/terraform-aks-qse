@@ -26,8 +26,7 @@ global:
 #  nginx-ingress:
 #    controller:
 #      service:
-#        loadBalancerIP: 172.20.2.39
- #       annotations:
+#        annotations:
 #          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 
 edge-auth:
