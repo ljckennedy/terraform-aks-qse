@@ -33,7 +33,7 @@ kubectl create clusterrole system:azure-cloud-provider --verb=get,create --resou
 kubectl create clusterrolebinding system:azure-cloud-provider --clusterrole=system:azure-cloud-provider --serviceaccount=kube-system:persistent-volume-binder
 kubectl apply -f ./scripts/azure-sc.yaml
 
-helm upgrade --install qseonk8s-init edge/qliksense-init 
-helm upgrade --install qseonk8s edge/qliksense -f ./scripts/basic.yaml
+helm upgrade --install qseonk8s-init qlik-edge/qliksense-init 
+helm upgrade --install qseonk8s eqlik-edgedge/qliksense -f ./scripts/basic.yaml
 sleep 60
 kubectl get service -l app=nginx-ingress --namespace default
