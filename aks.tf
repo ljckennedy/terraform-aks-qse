@@ -60,8 +60,7 @@ resource "azurerm_kubernetes_cluster" "akslkn" {
   }
 
   provisioner "local-exec" {
-    command = "./scripts/helm-install.sh"
-
+    command =  "${var.client_type == "linux" ? var.linux_script : var.windows_script}"
     environment = {
       AKS_NAME = "${var.cluster_name}"
       AKS_RG   = "${var.resource_group_name}"

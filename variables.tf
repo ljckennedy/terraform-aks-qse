@@ -36,3 +36,12 @@ variable "kubernetes_version" {
   default = "1.13.8"
 }
 
+variable "linux_script" {
+  default = "./scripts/helm-install.sh"
+}
+variable "windows_script" {
+  default = ".\\scripts\\helm_install.cmd"
+}
+
+variable "client_type" {
+}
