@@ -8,16 +8,47 @@ global:
   persistence:
     storageClass: azurefile
 
-identity-providers:
- secrets:
-   idpConfigs:
-     - discoveryUrl: "https://myidp/.well-known/openid-configuration"
-       clientId: "myid"
-       clientSecret: "mysecret"
-       realm: "qlik"
-       hostname: "lkn.elastic.example"
-       #useClaimsFromIdToken: true   
-       claimsMapping:
-         client_id: [ "client_id", "azp" ]
-         groups: ["/https:~1~1qlik.com~1roles", "/https:~1~1qlik.com~1groups"]
-         sub: ["/https:~1~1qlik.com~1sub", "sub"]
+#identity-providers:
+# secrets:
+#   idpConfigs:
+#     - discoveryUrl: "https://myidp/.well-known/openid-configuration"
+#      clientId: "myid"
+#       clientSecret: "mysecret"
+#       realm: "qlik"
+#       hostname: "lkn.elastic.example"
+#       #useClaimsFromIdToken: true   
+#       claimsMapping:
+#         client_id: [ "client_id", "azp" ]
+#         groups: ["/https:~1~1qlik.com~1roles", "/https:~1~1qlik.com~1groups"]
+#         sub: ["/https:~1~1qlik.com~1sub", "sub"]
+
+#elastic-infra:
+#  nginx-ingress:
+#    controller:
+#      service:
+#        loadBalancerIP: 172.20.2.39
+ #       annotations:
+#          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+
+edge-auth:
+  oidc:
+    redirectUri: https://elastic.example:32443/login/callback
+
+elastic-infra:
+  nginx-ingress:
+    controller:
+      service:
+        type: NodePort
+        nodePorts:
+          https: 32443
+      extraArgs.report-node-internal-ip-address: ""
+
+hub:
+  ingress:
+    annotations:
+      nginx.ingress.kubernetes.io/auth-signin: https://elastic.example:32443/login?returnto=$request_uri
+
+management-console:
+ ingress:
+   annotations:
+     nginx.ingress.kubernetes.io/auth-signin: https://elastic.example:32443/login?returnto=$request_uri

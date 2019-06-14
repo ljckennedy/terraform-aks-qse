@@ -8,13 +8,13 @@ tar xvfz helm-v2.14.1-linux-amd64.tar.gz
 mv linux-amd64/* ./bin/
 rmdir linux-amd64
 rm helm-v2.14.1-linux-amd64.tar.gz
-export PATH=./bin;$PATH
+export PATH=$PATH;./bin
 
 echo "Getting AKS credentials..."
-# AKS_NAME="akslkn"; AKS_RG="akslknrg";
-az aks get-credentials -n $AKS_NAME -g $AKS_RG --overwrite-existing
+AKS_NAME="qse4qmi"; AKS_RG="Pre-Sales-aor";AKS_SUBSCRIPTION="e2f7b1c0-b282-4d73-b95f-8ebc778040b8";
+az aks get-credentials -n $AKS_NAME -g $AKS_RG --subscription $AKS_SUBSCRIPTION --overwrite-existing
 echo "######################"
-echo "Creating service account and cluster role binding for Tiller..."
+#echo "Creating service account and cluster role binding for Tiller..."
 kubectl create serviceaccount -n kube-system tiller
 kubectl create clusterrolebinding tiller --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
 
@@ -22,18 +22,24 @@ echo "Initializing Helm..."
 helm init --service-account tiller --wait
 sleep 30
 echo "Helm has been installed."
-# echo 'adding qlik helm repo'
+sleep 10
+echo 'Adding qlik helm repo'
 helm repo add qlik-stable https://qlik.bintray.com/stable
 helm repo add qlik-edge https://qlik.bintray.com/edge
 helm repo update
 
-
 #azure file storage
+echo "Configure StorageClass 'azurefile'."
 kubectl create clusterrole system:azure-cloud-provider --verb=get,create --resource=secrets
 kubectl create clusterrolebinding system:azure-cloud-provider --clusterrole=system:azure-cloud-provider --serviceaccount=kube-system:persistent-volume-binder
 kubectl apply -f ./scripts/azure-sc.yaml
 
-helm upgrade --install qseonk8s-init edge/qliksense-init 
-helm upgrade --install qseonk8s edge/qliksense -f ./scripts/basic.yaml
-sleep 60
-kubectl get service -l app=nginx-ingress --namespace default
+echo "Deploying Qlik Sense Enterprise on Kubernetes."
+helm upgrade --install qseonk8s-init qlik-stable/qliksense-init 
+helm upgrade --install qseonk8s qlik-stable/qliksense -f ./scripts/basic-sample.yaml
+#sleep 60
+#kubectl get service -l app=nginx-ingress --namespace default
+
+kubectl get pod -o wide
+echo "Monitor QSE status deployment by executing: "
+echo "  ==> kubectl get pod -o wide -w"

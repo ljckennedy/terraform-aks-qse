@@ -1,7 +1,7 @@
 resource "azurerm_storage_account" "k8sstorage" {
-  name                = "${var.cluster_name}"
-  location            = "${azurerm_resource_group.aks.location}"
-  resource_group_name = "${azurerm_resource_group.aks.name}"
+  name                = "${var.cluster_name}storage"
+  location            = "${var.location}"
+  resource_group_name = "${var.resource_group_name}"
   account_tier             = "Standard"
   account_replication_type = "LRS"
 
