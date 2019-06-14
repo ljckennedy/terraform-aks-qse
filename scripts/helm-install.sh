@@ -11,7 +11,7 @@ rm helm-v2.14.1-linux-amd64.tar.gz
 export PATH=$PATH;./bin
 
 echo "Getting AKS credentials..."
-AKS_NAME="qse4qmi"; AKS_RG="Pre-Sales-aor";AKS_SUBSCRIPTION="e2f7b1c0-b282-4d73-b95f-8ebc778040b8";
+#AKS_NAME="qse4qmi"; AKS_RG="Pre-Sales-aor";AKS_SUBSCRIPTION="e2f7b1c0-b282-4d73-b95f-8ebc778040b8";
 az aks get-credentials -n $AKS_NAME -g $AKS_RG --subscription $AKS_SUBSCRIPTION --overwrite-existing
 echo "######################"
 #echo "Creating service account and cluster role binding for Tiller..."
