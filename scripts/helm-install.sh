@@ -8,7 +8,7 @@ tar xvfz helm-v2.14.1-linux-amd64.tar.gz
 mv linux-amd64/* ./bin/
 rmdir linux-amd64
 rm helm-v2.14.1-linux-amd64.tar.gz
-export PATH=$PATH;./bin
+export PATH=$PATH";./bin"
 
 echo "Getting AKS credentials..."
 #AKS_NAME="qse4qmi"; AKS_RG="Pre-Sales-aor";AKS_SUBSCRIPTION="e2f7b1c0-b282-4d73-b95f-8ebc778040b8";
@@ -19,7 +19,7 @@ kubectl create serviceaccount -n kube-system tiller
 kubectl create clusterrolebinding tiller --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
 
 echo "Initializing Helm..."
-helm init --service-account tiller --wait
+helm init --upgrade --service-account tiller --wait
 sleep 30
 echo "Helm has been installed."
 sleep 10
