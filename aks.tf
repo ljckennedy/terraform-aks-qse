@@ -17,7 +17,7 @@ resource "azurerm_resource_group" "aks" {
 #   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
 # }
 
-resource "azurerm_kubernetes_cluster" "akslkn" {
+resource "azurerm_kubernetes_cluster" "aksqse" {
   name                = "${var.cluster_name}"
   location            = "${azurerm_resource_group.aks.location}"
   resource_group_name = "${azurerm_resource_group.aks.name}"
@@ -59,13 +59,13 @@ resource "azurerm_kubernetes_cluster" "akslkn" {
     Environment = "Development"
   }
 
-  provisioner "local-exec" {
-    command =  "${var.client_type == "linux" ? var.linux_script : var.windows_script}"
-    environment = {
-      AKS_NAME = "${var.cluster_name}"
-      AKS_RG   = "${var.resource_group_name}"
-    }
-  }
+#   provisioner "local-exec" {
+#     command =  "${var.client_type == "linux" ? var.linux_script : var.windows_script}"
+#     environment = {
+#       AKS_NAME = "${var.cluster_name}"
+#       AKS_RG   = "${var.resource_group_name}"
+#     }
+#   }
 }
 
 data "azuread_service_principal" "akssp" {
