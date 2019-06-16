@@ -1,12 +1,13 @@
 resource "kubernetes_service_account" "tiller" {
   metadata {
-    name = "tiller"
+    name      = "tiller"
     namespace = "kube-system"
   }
 }
+
 resource "kubernetes_cluster_role_binding" "tiller" {
   metadata {
-        name = "tiller"
+    name = "tiller"
   }
   subject {
     api_group = "rbac.authorization.k8s.io"
@@ -16,25 +17,33 @@ resource "kubernetes_cluster_role_binding" "tiller" {
 
   role_ref {
     api_group = "rbac.authorization.k8s.io"
-    kind  = "ClusterRole"
-    name = "cluster-admin"
+    kind      = "ClusterRole"
+    name      = "cluster-admin"
   }
-  depends_on = ["kubernetes_service_account.tiller"]
+  depends_on = [kubernetes_service_account.tiller]
 }
 
 # Initialize Helm (and install Tiller)
 provider "helm" {
-  install_tiller = true
-    service_account = "tiller"
-    namespace = "kube-system"
+  install_tiller  = true
+  service_account = "tiller"
+  tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.12.3"
+
+  #tiller_image = "gcr.io/kubernetes-helm/tiller:v2.14.1"
+  namespace = "kube-system"
 
   kubernetes {
-    host                   = "${azurerm_kubernetes_cluster.aksqse.kube_config.0.host}"
-    client_certificate     = "${base64decode(azurerm_kubernetes_cluster.aksqse.kube_config.0.client_certificate)}"
-    client_key             = "${base64decode(azurerm_kubernetes_cluster.aksqse.kube_config.0.client_key)}"
-    cluster_ca_certificate = "${base64decode(azurerm_kubernetes_cluster.aksqse.kube_config.0.cluster_ca_certificate)}"
+    host = azurerm_kubernetes_cluster.aksqse.kube_config[0].host
+    client_certificate = base64decode(
+      azurerm_kubernetes_cluster.aksqse.kube_config[0].client_certificate,
+    )
+    client_key = base64decode(azurerm_kubernetes_cluster.aksqse.kube_config[0].client_key)
+    cluster_ca_certificate = base64decode(
+      azurerm_kubernetes_cluster.aksqse.kube_config[0].cluster_ca_certificate,
+    )
   }
 }
+
 # Add Kubernetes Stable Helm charts repo
 # data "helm_repository" "stable" {
 #     name = "stable"
@@ -48,23 +57,30 @@ data "helm_repository" "qlik-edge" {
 
 resource "helm_release" "qseonk8s-init" {
   name       = "qseonk8s-init"
-  repository = "${data.helm_repository.qlik-edge.metadata.0.name}"
+  repository = data.helm_repository.qlik-edge.metadata[0].name
   chart      = "qliksense-init"
   #version    = "latest"
 
   # values = [
   #   "${file("./scripts/basic.yaml")}"
   # ]
-
 }
+
 resource "helm_release" "qseonk8s" {
   name       = "qseonk8s"
-  repository = "${data.helm_repository.qlik-edge.metadata.0.name}"
+  repository = data.helm_repository.qlik-edge.metadata[0].name
   chart      = "qliksense"
+
   #version    = "latest"
 
   values = [
-    "${file("scripts/basic.yaml")}"
+    file("scripts/basic.yaml"),
   ]
 
+  set {
+    name  = "annotations.service.beta.kubernetes.io/azure-load-balancer-internal"
+    value = "true"
+  }
 }
+
+#depends_on = ["helm_release.qseonk8s-init"]

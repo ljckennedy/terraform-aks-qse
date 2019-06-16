@@ -10,16 +10,18 @@
 #     value = "${azurerm_kubernetes_cluster.aksqse.kube_config.0.cluster_ca_certificate}"
 # }
 output "kube_config" {
-    value = "${azurerm_kubernetes_cluster.aksqse.kube_config_raw}"
+  value = azurerm_kubernetes_cluster.aksqse.kube_config_raw
 }
+
 output "cluster_username" {
-    value = "${azurerm_kubernetes_cluster.aksqse.kube_config.0.username}"
+  value = azurerm_kubernetes_cluster.aksqse.kube_config[0].username
 }
 
 output "cluster_password" {
-    value = "${azurerm_kubernetes_cluster.aksqse.kube_config.0.password}"
+  value = azurerm_kubernetes_cluster.aksqse.kube_config[0].password
 }
 
 output "host" {
-    value = "${azurerm_kubernetes_cluster.aksqse.kube_config.0.host}"
+  value = azurerm_kubernetes_cluster.aksqse.kube_config[0].host
 }
+
