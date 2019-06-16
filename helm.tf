@@ -44,6 +44,7 @@ provider "helm" {
   }
 }
 
+
 # Add Kubernetes Stable Helm charts repo
 # data "helm_repository" "stable" {
 #     name = "stable"
@@ -70,6 +71,7 @@ resource "helm_release" "qseonk8s" {
   name       = "qseonk8s"
   repository = data.helm_repository.qlik-edge.metadata[0].name
   chart      = "qliksense"
+  timeout    = 1200
 
   #version    = "latest"
 
@@ -83,4 +85,3 @@ resource "helm_release" "qseonk8s" {
   }
 }
 
-#depends_on = ["helm_release.qseonk8s-init"]

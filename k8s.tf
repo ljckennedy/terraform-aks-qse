@@ -62,9 +62,9 @@ resource "kubernetes_service" "internal-lb" {
     }
   }
   spec {
-    # selector {
-    #   app = "${kubernetes_pod.example.metadata.0.labels.app}"
-    # }
+    selector = {
+      app = "${helm_release.qseonk8s.metadata.0.name}"
+    }
     session_affinity = "ClientIP"
     port {
       port        = 443
