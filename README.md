@@ -5,7 +5,7 @@ Terraform scripts for deploying QSE on Kubernetes on Azure (Presales)
 ## What you need:
 Create a Service Principal if you still don't have one:
 ```Bash
-az ad sp create-for-rbac --subscription <presales_subscription_id>
+az ad sp create-for-rbac --skip-assignment --subscription <presales_subscription_id>
 
 A response like this will return
 {
