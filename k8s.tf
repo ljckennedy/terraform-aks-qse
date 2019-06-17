@@ -54,26 +54,27 @@ resource "kubernetes_cluster_role_binding" "azure-cloud-provider" {
   # }
 }
 
-resource "kubernetes_service" "internal-lb" {
-  metadata {
-    name = "internal-lb"
-    annotations = {
-      "service.beta.kubernetes.io/azure-load-balancer-internal" = "true"
-    }
-  }
-  spec {
-    selector = {
-      app = "${helm_release.qseonk8s.metadata.0.name}"
-    }
-    session_affinity = "ClientIP"
-    port {
-      port        = 443
-      target_port = 443
-    }
+// shouldn't need this...
+// resource "kubernetes_service" "internal-lb" {
+//   metadata {
+//     name = "internal-lb"
+//     annotations = {
+//       "service.beta.kubernetes.io/azure-load-balancer-internal" = "true"
+//     }
+//   }
+//   spec {
+//     selector = {
+//       app = "${helm_release.qseonk8s.metadata.0.name}"
+//     }
+//     session_affinity = "ClientIP"
+//     port {
+//       port        = 443
+//       target_port = 443
+//     }
 
-    type = "LoadBalancer"
-  }
-}
+//     type = "LoadBalancer"
+//   }
+// }
 
 resource "kubernetes_storage_class" "azurefile" {
   metadata {
