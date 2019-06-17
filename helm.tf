@@ -99,8 +99,8 @@ identity-providers:
  secrets:
    idpConfigs:
      - discoveryUrl: "https://lkn.au.auth0.com/.well-known/openid-configuration"
-       clientId: "JhCoBKx4zjh5639fiF6mRuzIFKnzSWjp"
-       clientSecret: "rQvB8Yx-rNlAIIA4Wm241BTt2ZceBTWElXqm8A2o7SsGb2T6-ya_uKR71W_QFR4o"
+       clientId: "aaaa"
+       clientSecret: "bbb"
        realm: "Auth0"
        hostname: "lkn.elastic.example"
        #useClaimsFromIdToken: true   
