@@ -21,3 +21,10 @@ identity-providers:
          client_id: [ "client_id", "azp" ]
          groups: ["/https:~1~1qlik.com~1roles", "/https:~1~1qlik.com~1groups"]
          sub: ["/https:~1~1qlik.com~1sub", "sub"]
+
+elastic-infra:
+  nginx-ingress:
+    controller:
+      service:
+        annotations:
+          service.beta.kubernetes.io/azure-load-balancer-internal: "true"

@@ -4,6 +4,12 @@ variable "client_id" {
 variable "client_secret" {
 }
 
+variable "subscription_id" {
+}
+
+variable "tenant_id" {
+}
+
 variable "agent_count" {
   default = 1
 }
@@ -24,16 +30,16 @@ variable "resource_group_name" {
   default = "tf-aksxyz-rg"
 }
 
-variable "location" {
-  default = "westeurope"
-}
+// variable "location" {
+//   default = "westeurope"
+// }
 
 variable "network_plugin" {
   default = "kubenet"
 }
 
 variable "kubernetes_version" {
-  default = "1.13.8"
+  default = "1.13.5"
 }
 
 variable "linux_script" {
@@ -47,3 +53,27 @@ variable "windows_script" {
 variable "client_type" {
 }
 
+variable "newrg" {
+    description = "set to 1 to create a new resource group, 0 uses variable myrg"
+    default = 0
+}
+
+variable "myrg" {
+  description = "If set, this resource group will be used, otherwise a new oen is create."
+  default = ""
+}
+
+variable "mysubnet" {
+  description = "If Set, this subnet will be used, otherwise one is created"
+  default = null
+}
+
+variable "mylocation" {
+  description = "If Set, this subnet will be used, otherwise one is created"
+  default = null
+}
+
+// variable "mylocation" {
+//   description = "If Set, this subnet will be used, otherwise one is created"
+//   default = null
+// }

@@ -25,6 +25,7 @@ resource "kubernetes_cluster_role_binding" "tiller" {
 
 # Initialize Helm (and install Tiller)
 provider "helm" {
+  #depends_on = [kubernetes_cluster_role_binding.tiller]
   install_tiller  = true
   service_account = "tiller"
   tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.12.3"
@@ -57,6 +58,7 @@ data "helm_repository" "qlik-edge" {
 }
 
 resource "helm_release" "qseonk8s-init" {
+  depends_on = [kubernetes_cluster_role_binding.tiller]
   name       = "qseonk8s-init"
   repository = data.helm_repository.qlik-edge.metadata[0].name
   chart      = "qliksense-init"
@@ -68,55 +70,18 @@ resource "helm_release" "qseonk8s-init" {
 }
 
 resource "helm_release" "qseonk8s" {
+  depends_on = [helm_release.qseonk8s-init, kubernetes_storage_class.azurefile]
   name       = "qseonk8s"
   repository = data.helm_repository.qlik-edge.metadata[0].name
   chart      = "qliksense"
   timeout    = 1200
+  wait       = false
 
   #version    = "latest"
 
-  // values = [
-  //   file("scripts/basic.yaml"),
-  // ]
-
-  // set_string {
-  //   name  = "elastic-infra.nginx-ingress.controller.service.beta\\.kubernetes\\.io/azure-load-balancer-internal"
-  //   value = "true"
-  // }
   values = [
-  <<-EOF
-devMode:
- enabled: true
-
-engine:
- acceptEULA: "yes"
-
-global:
-  persistence:
-    storageClass: azurefile
-
-identity-providers:
- secrets:
-   idpConfigs:
-     - discoveryUrl: "https://lkn.au.auth0.com/.well-known/openid-configuration"
-       clientId: "JhCoBKx4zjh5639fiF6mRuzIFKnzSWjp"
-       clientSecret: "rQvB8Yx-rNlAIIA4Wm241BTt2ZceBTWElXqm8A2o7SsGb2T6-ya_uKR71W_QFR4o"
-       realm: "Auth0"
-       hostname: "lkn.elastic.example"
-       #useClaimsFromIdToken: true   
-       claimsMapping:
-         client_id: [ "client_id", "azp" ]
-         groups: ["/https:~1~1qlik.com~1roles", "/https:~1~1qlik.com~1groups"]
-         sub: ["/https:~1~1qlik.com~1sub", "sub"]
-
-elastic-infra:
-  nginx-ingress:
-    controller:
-      service:
-        annotations:
-          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-  EOF
-]
+    file("scripts/basic.yaml"),
+  ]
 
 }
 
