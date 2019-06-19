@@ -26,6 +26,5 @@ output "host" {
 }
 
 output "run_this" {
-
   value = "az aks get-credentials -n ${var.cluster_name} -g ${length(var.myrg) > 1 ? var.myrg : azurerm_resource_group.aks[0].name} --overwrite-existing"
 }

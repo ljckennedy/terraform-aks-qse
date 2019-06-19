@@ -28,9 +28,8 @@ provider "helm" {
   #depends_on = [kubernetes_cluster_role_binding.tiller]
   install_tiller  = true
   service_account = "tiller"
-  tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.12.3"
-
-  #tiller_image = "gcr.io/kubernetes-helm/tiller:v2.14.1"
+  #tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.12.3"
+  tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.14.1"
   namespace = "kube-system"
 
   kubernetes {
@@ -74,7 +73,7 @@ resource "helm_release" "qseonk8s" {
   name       = "qseonk8s"
   repository = data.helm_repository.qlik-edge.metadata[0].name
   chart      = "qliksense"
-  timeout    = 1200
+  timeout    = 1201
   wait       = false
 
   #version    = "latest"
