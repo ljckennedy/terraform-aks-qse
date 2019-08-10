@@ -4,3 +4,4 @@
 **/basic.yaml
 /bin
 scripts/helm-install.ps1
+logmon/*

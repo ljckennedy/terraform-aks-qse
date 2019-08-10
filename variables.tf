@@ -30,13 +30,10 @@ variable "resource_group_name" {
   default = "tf-aksxyz-rg"
 }
 
-// variable "location" {
-//   default = "westeurope"
-// }
-
-variable "network_plugin" {
-  default = "kubenet"
+variable "vm_size" {
+  default = "Standard_DS2_v2"
 }
+
 
 variable "kubernetes_version" {
   default = "1.13.5"
@@ -73,7 +70,27 @@ variable "mylocation" {
   default = null
 }
 
-// variable "mylocation" {
-//   description = "If Set, this subnet will be used, otherwise one is created"
-//   default = null
-// }
+variable "network_plugin" {
+  description = "If Set, set to azure or kubenet"
+  default = "kubenet"
+}
+
+variable "service_cidr" {
+  description = " The Network Range used by the Kubernetes service. This is required when network_plugin is set to azure"
+  default = null
+}
+
+variable "dns_service_ip" {
+  description = " IP address within the Kubernetes service address range that will be used by cluster service discovery (kube-dns)"
+  default = null
+}
+
+variable "docker_bridge_cidr" {
+  description = "IP address (in CIDR notation) used as the Docker bridge IP address on nodes. This is required when network_plugin is set to azure"
+  default = null
+}
+
+variable "max_pods" {
+  description = "number of pods allowed per node"
+  default = 30
+}

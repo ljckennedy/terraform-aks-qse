@@ -42,9 +42,12 @@ resource "azurerm_kubernetes_cluster" "aksqse" {
   agent_pool_profile {
     name            = "agentpool"
     count           = var.agent_count
-    vm_size         = "Standard_DS2_v2"
+    vm_size         = var.vm_size
     os_type         = "Linux"
     os_disk_size_gb = 30
+    max_pods        = var.max_pods
+    # min_count       = 3
+    # max_count       = 10
     vnet_subnet_id = "${length(var.myrg) > 1 ? var.mysubnet : azurerm_subnet.subnet[0].id }" 
   }
 
@@ -53,9 +56,13 @@ resource "azurerm_kubernetes_cluster" "aksqse" {
     client_secret = var.client_secret
   }
 
-  # network_profile {
-  #   network_plugin = "${var.network_plugin}"
-  # }
+  network_profile {
+    network_plugin = var.network_plugin
+    service_cidr = var.service_cidr
+    dns_service_ip = var.dns_service_ip
+    docker_bridge_cidr = var.docker_bridge_cidr
+
+  }
 
   role_based_access_control {
     enabled = true
